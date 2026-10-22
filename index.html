@@ -2,13 +2,294 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>My First GitHub Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vedic Dharma & Wealth Engine</title>
   <style>
-    body { font-family: sans-serif; text-align: center; padding-top: 50px; }
+    :root {
+      --bg: #0f1117;
+      --card-bg: #1a1e29;
+      --border: #2a3142;
+      --gold: #f59e0b;
+      --gold-hover: #d97706;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --danger: #ef4444;
+      --success: #10b981;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: var(--bg); color: var(--text); padding: 2rem 1rem; display: flex; justify-content: center; }
+    .container { width: 100%; max-width: 760px; }
+    
+    header { text-align: center; margin-bottom: 2rem; }
+    header h1 { font-size: 1.8rem; color: #fff; margin-bottom: 0.4rem; }
+    header p { color: var(--text-muted); font-size: 0.95rem; }
+
+    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+    h2 { font-size: 1.2rem; margin-bottom: 1rem; color: var(--gold); border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+
+    .input-group { margin-bottom: 1.2rem; }
+    label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.4rem; }
+    select, input[type="number"] {
+      width: 100%; background: #131722; border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.65rem 0.8rem; color: #fff; font-size: 0.95rem; outline: none;
+    }
+    select:focus, input:focus { border-color: var(--gold); }
+
+    .range-wrap { display: flex; align-items: center; gap: 1rem; }
+    input[type="range"] { flex: 1; accent-color: var(--gold); }
+    .range-val { width: 32px; font-weight: bold; font-size: 0.95rem; text-align: right; }
+
+    button {
+      width: 100%; background: var(--gold); color: #000; font-weight: 700; border: none;
+      padding: 0.9rem; border-radius: 8px; font-size: 1rem; cursor: pointer; transition: background 0.2s;
+    }
+    button:hover { background: var(--gold-hover); }
+
+    /* Results */
+    #results { display: none; margin-top: 1.5rem; }
+    .score-banner { display: flex; align-items: center; justify-content: space-around; background: #131722; padding: 1.2rem; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 1.2rem; text-align: center; }
+    .score-circle { font-size: 2.2rem; font-weight: 800; color: var(--gold); }
+    .score-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; margin-top: 0.2rem; }
+
+    .sub-scores { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.2rem; text-align: center; }
+    .sub-card { background: #131722; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--border); }
+    .sub-val { font-size: 1.3rem; font-weight: 700; margin-top: 0.2rem; }
+
+    .directive-card { background: #131722; border-left: 4px solid var(--gold); padding: 1rem; border-radius: 4px; margin-bottom: 0.8rem; font-size: 0.9rem; line-height: 1.5; }
+    .directive-card strong { display: block; margin-bottom: 0.2rem; font-size: 0.95rem; }
+    .badge { display: inline-block; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: bold; margin-bottom: 0.4rem; }
+    .badge-warn { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
+    .badge-good { background: rgba(16, 185, 129, 0.15); color: var(--success); }
   </style>
 </head>
 <body>
-  <h1>Hello, welcome to my website!</h1>
-  <p>Hosted with GitHub Pages.</p>
+
+<div class="container">
+  <header>
+    <h1>Dharma & Lakshmi Engine</h1>
+    <p>Align Soul Duty (Atmakaraka) with Energetic Circulation (Wealth Flow)</p>
+  </header>
+
+  <!-- Step 1: Chart Setup -->
+  <div class="card">
+    <h2>1. Atmakaraka (Soul Duty Configuration)</h2>
+    <div class="grid">
+      <div class="input-group">
+        <label>Your Atmakaraka Planet</label>
+        <select id="akPlanet">
+          <option value="Sun">Sun (Surya - Ego/Leadership)</option>
+          <option value="Moon">Moon (Chandra - Emotion/Care)</option>
+          <option value="Mars">Mars (Mangal - Courage/Action)</option>
+          <option value="Mercury">Mercury (Budha - Intellect/Speech)</option>
+          <option value="Jupiter">Jupiter (Guru - Wisdom/Truth)</option>
+          <option value="Venus">Venus (Shukra - Purity/Pleasure)</option>
+          <option value="Saturn">Saturn (Shani - Service/Discipline)</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label>House Placed in Birth Chart (D1)</label>
+        <select id="akHouse">
+          <option value="1">1st House (Self, Health & Identity)</option>
+          <option value="2">2nd House (Family Wealth & Sustenance)</option>
+          <option value="3">3rd House (Siblings, Initiative & Skills)</option>
+          <option value="4">4th House (Mother, Domestic Peace & Home)</option>
+          <option value="5">5th House (Children, Learning & Sadhana)</option>
+          <option value="6">6th House (Service to Afflicted, Healthcare, Daily Labor)</option>
+          <option value="7">7th House (Spouse, Humility in Partnerships)</option>
+          <option value="8">8th House (Occult, In-laws, Transformation)</option>
+          <option value="9">9th House (Father, Gurus, Philosophy)</option>
+          <option value="10">10th House (Public Work, Career & Institutions)</option>
+          <option value="11">11th House (Social Causes, Networks & Community)</option>
+          <option value="12">12th House (Solitude, Detachment & Foreign Lands)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="input-group">
+        <label>Internal Resentment / Resistance to This Duty (0-10)</label>
+        <div class="range-wrap">
+          <input type="range" id="akResist" min="0" max="10" value="5" oninput="updateVal('resistVal', this.value)">
+          <span class="range-val" id="resistVal">5</span>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Hours/Week Spent Fulfilling This Duty</label>
+        <input type="number" id="akHours" min="0" max="80" value="4">
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2: Wealth Receptivity -->
+  <div class="card">
+    <h2>2. Lakshmi Audit (Resource Flow & Environment)</h2>
+    <div class="grid">
+      <div class="input-group">
+        <label>Monthly Inflow / Income ($)</label>
+        <input type="number" id="flowIn" value="5000">
+      </div>
+      <div class="input-group">
+        <label>Circulated Outflow (Charity, Growth, Upgrades) ($)</label>
+        <input type="number" id="flowOut" value="250">
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="input-group">
+        <label>Living Space Clutter/Entropy (0 = Clean, 10 = Chaos)</label>
+        <div class="range-wrap">
+          <input type="range" id="clutter" min="0" max="10" value="6" oninput="updateVal('clutterVal', this.value)">
+          <span class="range-val" id="clutterVal">6</span>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Shared Table Meals per Week (0-7 Days)</label>
+        <input type="number" id="meals" min="0" max="7" value="2">
+      </div>
+    </div>
+
+    <button onclick="calculateEngine()">Calculate Manifestation Capacity</button>
+  </div>
+
+  <!-- Step 3: Analysis Engine Output -->
+  <div class="card" id="results">
+    <h2>3. Diagnostic Audit & Directives</h2>
+    
+    <div class="score-banner">
+      <div>
+        <div class="score-circle" id="mScore">0</div>
+        <div class="score-label">Net Manifestation Score</div>
+      </div>
+    </div>
+
+    <div class="sub-scores">
+      <div class="sub-card">
+        <div class="score-label">Dharma Alignment (A)</div>
+        <div class="sub-val" id="aScore">0%</div>
+      </div>
+      <div class="sub-card">
+        <div class="score-label">Circulation Flow (C)</div>
+        <div class="sub-val" id="cScore">0%</div>
+      </div>
+    </div>
+
+    <div id="directivesContainer"></div>
+  </div>
+</div>
+
+<script>
+  function updateVal(id, val) {
+    document.getElementById(id).innerText = val;
+  }
+
+  const houseDuties = {
+    1: "Taking full personal accountability for your physical vitality and boundary-setting rather than martyr-like codependency.",
+    2: "Nourishing family lineage, preserving heritage, and managing family sustenance without resentment.",
+    3: "Developing manual dexterity, bold communication, courageous enterprise, and assisting younger siblings.",
+    4: "Cultivating domestic peace, honoring the mother, and maintaining an organized, stable home.",
+    5: "Mentoring children, continuous philosophical education, and dedicated mantra or creative sadhana.",
+    6: "Humble daily service, tackling hard problem-solving tasks, and aiding the sick, underprivileged, or animal welfare.",
+    7: "Surrendering personal ego within marriage and treating business partnerships with strict equity and humility.",
+    8: "Facing sudden transformations, resolving hidden in-law obligations, and exploring occult research without panic.",
+    9: "Honoring gurus, fathers, high ethical standards, and contributing to dharmic philosophy.",
+    10: "Executing public duties relentlessly, serving institutions or public projects, and building without vanity.",
+    11: "Advancing collective networks, social causes, large non-profits, and looking after elder siblings.",
+    12: "Embracing periods of quiet isolation, spiritual detachment, meditation, and supporting humanitarian causes abroad."
+  };
+
+  function calculateEngine() {
+    const house = parseInt(document.getElementById('akHouse').value);
+    const resist = parseFloat(document.getElementById('akResist').value);
+    const hours = parseFloat(document.getElementById('akHours').value);
+    const inflow = Math.max(0, parseFloat(document.getElementById('flowIn').value) || 0);
+    const outflow = Math.max(0, parseFloat(document.getElementById('flowOut').value) || 0);
+    const clutter = parseFloat(document.getElementById('clutter').value);
+    const meals = parseFloat(document.getElementById('meals').value);
+
+    // 1. Dharma Alignment Score A(AK)
+    const acceptance = Math.max(0, 1 - (resist / 10));
+    const timeRatio = Math.min(1.0, hours / 7.0);
+    const A = Math.round(100 * acceptance * timeRatio);
+
+    // 2. Prana Circulation R_prana
+    const phi = inflow > 0 ? (outflow / inflow) : 0;
+    let R_prana = 0;
+    if (phi < 0.05) {
+      R_prana = (phi / 0.05) * 40; // Hoarding penalty
+    } else if (phi <= 0.20) {
+      R_prana = 40 + ((phi - 0.05) / 0.15) * 60; // Optimal 10-20% circulation
+    } else {
+      R_prana = Math.max(20, 100 - ((phi - 0.20) / 0.40) * 80); // Over-dissipation
+    }
+
+    // 3. Environmental Order Score (Vastu proxy)
+    const orderScore = ((10 - clutter) * 7) + (meals * 4.28);
+    const O = Math.min(100, Math.round(orderScore));
+
+    // 4. Lakshmi Circulation Score C
+    const C = Math.round((R_prana + O) / 2);
+
+    // 5. Final Manifestation Capacity M = (A * C) / 100
+    const M = Math.round((A * C) / 100);
+
+    // UI Updates
+    document.getElementById('mScore').innerText = M;
+    document.getElementById('aScore').innerText = A + "%";
+    document.getElementById('cScore').innerText = C + "%";
+
+    const dir = document.getElementById('directivesContainer');
+    dir.innerHTML = '';
+
+    // Directives Logic
+    // Primary Assignment
+    dir.innerHTML += `
+      <div class="directive-card">
+        <span class="badge badge-good">PRIMARY SOUL KARMA (HOUSE ${house})</span>
+        <strong>Your Active Dharma Mandate:</strong>
+        ${houseDuties[house]}
+      </div>
+    `;
+
+    // Resistance Warning
+    if (resist >= 6) {
+      dir.innerHTML += `
+        <div class="directive-card" style="border-color: var(--danger)">
+          <span class="badge badge-warn">BOTTLENECK: DHARMIC FRICTION</span>
+          <strong>Stop Resenting House ${house} Duties:</strong>
+          You are reporting a high emotional resistance score (${resist}/10). Vedic law dictates that running from the Atmakaraka sphere creates mental agitation and blocks worldly support. Lean into this role deliberately.
+        </div>
+      `;
+    }
+
+    // Circulation Warning
+    if (phi < 0.05) {
+      dir.innerHTML += `
+        <div class="directive-card" style="border-color: var(--gold)">
+          <span class="badge badge-warn">BOTTLENECK: PRANIC HOARDING</span>
+          <strong>Open the Exhale Channel:</strong>
+          You are circulating only ${(phi * 100).toFixed(1)}% of your income. Fear-based saving chokes incoming flow. Channel 10% toward intentional charity (Dāna), personal learning, or upgrading basic living comfort.
+        </div>
+      `;
+    }
+
+    // Clutter / Vastu Warning
+    if (clutter >= 6) {
+      dir.innerHTML += `
+        <div class="directive-card" style="border-color: var(--gold)">
+          <span class="badge badge-warn">BOTTLENECK: HABITAT ENTROPY</span>
+          <strong>Declutter to Invite Sri (Lakshmi):</strong>
+          Your physical clutter is ranked ${clutter}/10. Lakshmi enters spaces defined by order, beauty, and comfort. Clear stagnant clutter from your living room and corners this week.
+        </div>
+      `;
+    }
+
+    document.getElementById('results').style.display = 'block';
+  }
+</script>
 </body>
 </html>
