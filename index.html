@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vedic Dharma & Wealth Engine</title>
+  <!-- PDF.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <style>
     :root {
       --bg: #0f1117;
@@ -19,14 +21,14 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     body { background: var(--bg); color: var(--text); padding: 2rem 1rem; display: flex; justify-content: center; }
-    .container { width: 100%; max-width: 760px; }
+    .container { width: 100%; max-width: 780px; }
     
     header { text-align: center; margin-bottom: 2rem; }
     header h1 { font-size: 1.8rem; color: #fff; margin-bottom: 0.4rem; }
     header p { color: var(--text-muted); font-size: 0.95rem; }
 
     .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
-    h2 { font-size: 1.2rem; margin-bottom: 1rem; color: var(--gold); border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+    h2 { font-size: 1.15rem; margin-bottom: 1rem; color: var(--gold); border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
 
     .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
     @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
@@ -42,6 +44,16 @@
     .range-wrap { display: flex; align-items: center; gap: 1rem; }
     input[type="range"] { flex: 1; accent-color: var(--gold); }
     .range-val { width: 32px; font-weight: bold; font-size: 0.95rem; text-align: right; }
+
+    /* Drop Area */
+    .drop-zone {
+      border: 2px dashed var(--border); border-radius: 10px; padding: 1.8rem; text-align: center;
+      background: #131722; cursor: pointer; transition: 0.2s border-color; margin-bottom: 1rem;
+    }
+    .drop-zone:hover { border-color: var(--gold); }
+    .drop-zone p { color: var(--text-muted); font-size: 0.9rem; }
+    .drop-zone span { color: var(--gold); font-weight: 600; text-decoration: underline; }
+    #pdfStatus { font-size: 0.85rem; margin-top: 0.6rem; color: var(--gold); display: none; }
 
     button {
       width: 100%; background: var(--gold); color: #000; font-weight: 700; border: none;
@@ -71,40 +83,50 @@
 <div class="container">
   <header>
     <h1>Dharma & Lakshmi Engine</h1>
-    <p>Align Soul Duty (Atmakaraka) with Energetic Circulation (Wealth Flow)</p>
+    <p>Atmakaraka Soul Duty & Conscious Prana Circulation</p>
   </header>
+
+  <!-- PDF Auto-Parse Module -->
+  <div class="card">
+    <h2>Upload AstroSage Kundli PDF (Auto-Detect)</h2>
+    <div class="drop-zone" onclick="document.getElementById('fileInput').click()">
+      <p>Drop your <strong>AstroSage Kundli PDF</strong> here, or <span>browse</span></p>
+      <input type="file" id="fileInput" accept="application/pdf" style="display:none" onchange="handleFileUpload(event)">
+      <div id="pdfStatus">Parsing horoscope positions...</div>
+    </div>
+  </div>
 
   <!-- Step 1: Chart Setup -->
   <div class="card">
-    <h2>1. Atmakaraka (Soul Duty Configuration)</h2>
+    <h2>1. Atmakaraka (Soul Duty Alignment)</h2>
     <div class="grid">
       <div class="input-group">
-        <label>Your Atmakaraka Planet</label>
+        <label>Atmakaraka Planet (AK)</label>
         <select id="akPlanet">
-          <option value="Sun">Sun (Surya - Ego/Leadership)</option>
-          <option value="Moon">Moon (Chandra - Emotion/Care)</option>
+          <option value="Sun">Sun (Surya - Ego/Sovereignty)</option>
+          <option value="Moon">Moon (Chandra - Mind/Compassion)</option>
           <option value="Mars">Mars (Mangal - Courage/Action)</option>
           <option value="Mercury">Mercury (Budha - Intellect/Speech)</option>
           <option value="Jupiter">Jupiter (Guru - Wisdom/Truth)</option>
-          <option value="Venus">Venus (Shukra - Purity/Pleasure)</option>
-          <option value="Saturn">Saturn (Shani - Service/Discipline)</option>
+          <option value="Venus">Venus (Shukra - Purity/Relationships)</option>
+          <option value="Saturn">Saturn (Shani - Service/Patience)</option>
         </select>
       </div>
 
       <div class="input-group">
         <label>House Placed in Birth Chart (D1)</label>
         <select id="akHouse">
-          <option value="1">1st House (Self, Health & Identity)</option>
+          <option value="1">1st House (Self, Health & Vitality)</option>
           <option value="2">2nd House (Family Wealth & Sustenance)</option>
-          <option value="3">3rd House (Siblings, Initiative & Skills)</option>
-          <option value="4">4th House (Mother, Domestic Peace & Home)</option>
+          <option value="3">3rd House (Siblings, Courage & Skills)</option>
+          <option value="4">4th House (Mother, Domestic Peace & Assets)</option>
           <option value="5">5th House (Children, Learning & Sadhana)</option>
-          <option value="6">6th House (Service to Afflicted, Healthcare, Daily Labor)</option>
+          <option value="6">6th House (Service to Afflicted, Healthcare, Problem Solving)</option>
           <option value="7">7th House (Spouse, Humility in Partnerships)</option>
-          <option value="8">8th House (Occult, In-laws, Transformation)</option>
+          <option value="8">8th House (Occult, In-laws, Transformations)</option>
           <option value="9">9th House (Father, Gurus, Philosophy)</option>
           <option value="10">10th House (Public Work, Career & Institutions)</option>
-          <option value="11">11th House (Social Causes, Networks & Community)</option>
+          <option value="11">11th House (Social Networks & Collective Causes)</option>
           <option value="12">12th House (Solitude, Detachment & Foreign Lands)</option>
         </select>
       </div>
@@ -112,44 +134,55 @@
 
     <div class="grid">
       <div class="input-group">
-        <label>Internal Resentment / Resistance to This Duty (0-10)</label>
+        <label>Resentment / Resistance to This Duty (0 = Joyful, 10 = Resentful)</label>
         <div class="range-wrap">
-          <input type="range" id="akResist" min="0" max="10" value="5" oninput="updateVal('resistVal', this.value)">
-          <span class="range-val" id="resistVal">5</span>
+          <input type="range" id="akResist" min="0" max="10" value="4" oninput="updateVal('resistVal', this.value)">
+          <span class="range-val" id="resistVal">4</span>
         </div>
       </div>
       <div class="input-group">
-        <label>Hours/Week Spent Fulfilling This Duty</label>
-        <input type="number" id="akHours" min="0" max="80" value="4">
+        <label>Weekly Dedicated Hours to This Duty</label>
+        <input type="number" id="akHours" min="0" max="80" value="5">
       </div>
     </div>
   </div>
 
-  <!-- Step 2: Wealth Receptivity -->
+  <!-- Step 2: Expanded Wealth Receptivity -->
   <div class="card">
-    <h2>2. Lakshmi Audit (Resource Flow & Environment)</h2>
+    <h2>2. Lakshmi Audit & Granular Cashflow</h2>
     <div class="grid">
       <div class="input-group">
-        <label>Monthly Inflow / Income ($)</label>
+        <label>Total Monthly Inflow / Income ($)</label>
         <input type="number" id="flowIn" value="5000">
       </div>
       <div class="input-group">
-        <label>Circulated Outflow (Charity, Growth, Upgrades) ($)</label>
-        <input type="number" id="flowOut" value="250">
+        <label>Fixed Living Expenses (Rent, Utilities, Food) ($)</label>
+        <input type="number" id="flowFixed" value="2600">
       </div>
     </div>
 
     <div class="grid">
       <div class="input-group">
-        <label>Living Space Clutter/Entropy (0 = Clean, 10 = Chaos)</label>
+        <label>Intentional Circulated Outflow (Charity, Growth, Space) ($)</label>
+        <input type="number" id="flowOut" value="500">
+      </div>
+      <div class="input-group">
+        <label>Unconscious Leakages (Impulse, Gambling, Status) ($)</label>
+        <input type="number" id="flowLeak" value="150">
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="input-group">
+        <label>Living Space Entropy (0 = Clean/Ordered, 10 = Chaos)</label>
         <div class="range-wrap">
-          <input type="range" id="clutter" min="0" max="10" value="6" oninput="updateVal('clutterVal', this.value)">
-          <span class="range-val" id="clutterVal">6</span>
+          <input type="range" id="clutter" min="0" max="10" value="4" oninput="updateVal('clutterVal', this.value)">
+          <span class="range-val" id="clutterVal">4</span>
         </div>
       </div>
       <div class="input-group">
-        <label>Shared Table Meals per Week (0-7 Days)</label>
-        <input type="number" id="meals" min="0" max="7" value="2">
+        <label>Communal / Shared Meals per Week (0-7 Days)</label>
+        <input type="number" id="meals" min="0" max="7" value="3">
       </div>
     </div>
 
@@ -183,31 +216,105 @@
 </div>
 
 <script>
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
   function updateVal(id, val) {
     document.getElementById(id).innerText = val;
   }
 
   const houseDuties = {
-    1: "Taking full personal accountability for your physical vitality and boundary-setting rather than martyr-like codependency.",
-    2: "Nourishing family lineage, preserving heritage, and managing family sustenance without resentment.",
-    3: "Developing manual dexterity, bold communication, courageous enterprise, and assisting younger siblings.",
-    4: "Cultivating domestic peace, honoring the mother, and maintaining an organized, stable home.",
-    5: "Mentoring children, continuous philosophical education, and dedicated mantra or creative sadhana.",
+    1: "Taking full personal accountability for your physical health, identity, and personal boundaries rather than self-sacrificing.",
+    2: "Nourishing family lineage, managing wealth sustenance responsibly, and supporting family members without resentment.",
+    3: "Developing manual courage, creative initiative, bold communication, and fulfilling duties toward younger siblings.",
+    4: "Cultivating domestic peace, honoring the mother, maintaining a clean home, and building grounded assets.",
+    5: "Mentoring children, continuous education, and engaging in dedicated spiritual or creative practice (mantra sadhana).",
     6: "Humble daily service, tackling hard problem-solving tasks, and aiding the sick, underprivileged, or animal welfare.",
-    7: "Surrendering personal ego within marriage and treating business partnerships with strict equity and humility.",
-    8: "Facing sudden transformations, resolving hidden in-law obligations, and exploring occult research without panic.",
-    9: "Honoring gurus, fathers, high ethical standards, and contributing to dharmic philosophy.",
-    10: "Executing public duties relentlessly, serving institutions or public projects, and building without vanity.",
-    11: "Advancing collective networks, social causes, large non-profits, and looking after elder siblings.",
-    12: "Embracing periods of quiet isolation, spiritual detachment, meditation, and supporting humanitarian causes abroad."
+    7: "Surrendering personal ego within marriage and treating business partnerships with equity and humility.",
+    8: "Facing sudden transformations, resolving hidden in-law obligations, and exploring research or occult matters without fear.",
+    9: "Honoring mentors, father, high ethical codes, and supporting religious or philosophical learning.",
+    10: "Executing public duties relentlessly, serving institutions or collective enterprises, and building without vanity.",
+    11: "Advancing collective networks, social causes, large communities, and looking after elder siblings.",
+    12: "Embracing quiet isolation, spiritual detachment, meditation, and supporting humanitarian causes far from home."
   };
+
+  const planetMap = {
+    "satn": "Saturn", "saturn": "Saturn", "shani": "Saturn",
+    "sun": "Sun", "surya": "Sun",
+    "mon": "Moon", "moon": "Moon", "chandra": "Moon",
+    "mars": "Mars", "mangal": "Mars",
+    "merc": "Mercury", "mercury": "Mercury", "budha": "Mercury",
+    "jupt": "Jupiter", "jupiter": "Jupiter", "guru": "Jupiter",
+    "venu": "Venus", "venus": "Venus", "shukra": "Venus"
+  };
+
+  // PDF Parser Logic
+  async function handleFileUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const status = document.getElementById('pdfStatus');
+    status.style.display = 'block';
+    status.innerText = "Analyzing PDF...";
+
+    try {
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      
+      let detectedAK = null;
+      let detectedHouse = null;
+
+      // Extract text from pages
+      for (let i = 1; i <= Math.min(pdf.numPages, 45); i++) {
+        const page = await pdf.getPage(i);
+        const textContent = await page.getTextContent();
+        const text = textContent.items.map(item => item.str).join(" ");
+
+        // 1. Detect Atmakaraka from Jaimini / Chara Karaka section (Page 23)
+        if (!detectedAK && (text.includes("Atma") || text.includes("Karakamsa"))) {
+          const match = text.match(/Atma\s*\|\s*([A-Za-z]+)\s*\|\s*([A-Za-z]+)/i) || 
+                        text.match(/Atma\s+([A-Za-z]+)\s+([A-Za-z]+)/i);
+          if (match) {
+            // First captured group is usually Sthir (Sun), second is Chara
+            const chara = (match[2] || match[1]).toLowerCase();
+            if (planetMap[chara]) detectedAK = planetMap[chara];
+          }
+        }
+
+        // 2. Detect House from Planet Consideration sections (Pages 35-40)
+        if (detectedAK && !detectedHouse) {
+          const regex = new RegExp(`Your\\s+${detectedAK}\\s+is\\s+in[^\\.]*situated\\s+in\\s+(\\d+)(?:st|nd|rd|th)?\\s+house`, 'i');
+          const houseMatch = text.match(regex);
+          if (houseMatch) {
+            detectedHouse = parseInt(houseMatch[1]);
+          }
+        }
+      }
+
+      // Populate form if found
+      if (detectedAK) {
+        document.getElementById('akPlanet').value = detectedAK;
+      }
+      if (detectedHouse) {
+        document.getElementById('akHouse').value = detectedHouse.toString();
+      }
+
+      status.innerText = `Auto-Detected: ${detectedAK || 'Planet undetected'} in House ${detectedHouse || 'undetected'}. Verified with chart.`;
+    } catch (err) {
+      console.error(err);
+      status.innerText = "Error parsing PDF. Please select values manually.";
+    }
+  }
 
   function calculateEngine() {
     const house = parseInt(document.getElementById('akHouse').value);
     const resist = parseFloat(document.getElementById('akResist').value);
     const hours = parseFloat(document.getElementById('akHours').value);
+    
     const inflow = Math.max(0, parseFloat(document.getElementById('flowIn').value) || 0);
-    const outflow = Math.max(0, parseFloat(document.getElementById('flowOut').value) || 0);
+    const fixedExp = Math.max(0, parseFloat(document.getElementById('flowFixed').value) || 0);
+    const outflowCirc = Math.max(0, parseFloat(document.getElementById('flowOut').value) || 0);
+    const outflowLeak = Math.max(0, parseFloat(document.getElementById('flowLeak').value) || 0);
+
     const clutter = parseFloat(document.getElementById('clutter').value);
     const meals = parseFloat(document.getElementById('meals').value);
 
@@ -216,15 +323,21 @@
     const timeRatio = Math.min(1.0, hours / 7.0);
     const A = Math.round(100 * acceptance * timeRatio);
 
-    // 2. Prana Circulation R_prana
-    const phi = inflow > 0 ? (outflow / inflow) : 0;
+    // 2. Prana Circulation Ratio φ
+    const phi = inflow > 0 ? (outflowCirc / inflow) : 0;
     let R_prana = 0;
     if (phi < 0.05) {
       R_prana = (phi / 0.05) * 40; // Hoarding penalty
     } else if (phi <= 0.20) {
-      R_prana = 40 + ((phi - 0.05) / 0.15) * 60; // Optimal 10-20% circulation
+      R_prana = 40 + ((phi - 0.05) / 0.15) * 60; // 10-20% optimal circulation
     } else {
-      R_prana = Math.max(20, 100 - ((phi - 0.20) / 0.40) * 80); // Over-dissipation
+      R_prana = Math.max(20, 100 - ((phi - 0.20) / 0.40) * 80);
+    }
+
+    // Leakage Penalty Deduction
+    const leakRatio = inflow > 0 ? (outflowLeak / inflow) : 0;
+    if (leakRatio > 0.10) {
+      R_prana = Math.max(0, R_prana - ((leakRatio - 0.10) * 100));
     }
 
     // 3. Environmental Order Score (Vastu proxy)
@@ -234,10 +347,10 @@
     // 4. Lakshmi Circulation Score C
     const C = Math.round((R_prana + O) / 2);
 
-    // 5. Final Manifestation Capacity M = (A * C) / 100
+    // 5. Net Manifestation Capacity M
     const M = Math.round((A * C) / 100);
 
-    // UI Updates
+    // Update UI
     document.getElementById('mScore').innerText = M;
     document.getElementById('aScore').innerText = A + "%";
     document.getElementById('cScore').innerText = C + "%";
@@ -245,8 +358,7 @@
     const dir = document.getElementById('directivesContainer');
     dir.innerHTML = '';
 
-    // Directives Logic
-    // Primary Assignment
+    // Directive 1: Primary Karmic Mandate
     dir.innerHTML += `
       <div class="directive-card">
         <span class="badge badge-good">PRIMARY SOUL KARMA (HOUSE ${house})</span>
@@ -255,35 +367,45 @@
       </div>
     `;
 
-    // Resistance Warning
+    // Directive 2: Dharmic Friction Warning
     if (resist >= 6) {
       dir.innerHTML += `
         <div class="directive-card" style="border-color: var(--danger)">
-          <span class="badge badge-warn">BOTTLENECK: DHARMIC FRICTION</span>
-          <strong>Stop Resenting House ${house} Duties:</strong>
-          You are reporting a high emotional resistance score (${resist}/10). Vedic law dictates that running from the Atmakaraka sphere creates mental agitation and blocks worldly support. Lean into this role deliberately.
+          <span class="badge badge-warn">BOTTLENECK: DHARMIC RESISTANCE</span>
+          <strong>Stop Resenting House ${house} Responsibilities:</strong>
+          Reporting high emotional friction (${resist}/10) toward your Atmakaraka area creates karmic agitation and blocks incoming resources. Fulfill this duty intentionally.
         </div>
       `;
     }
 
-    // Circulation Warning
+    // Directive 3: Cashflow Diagnostics
     if (phi < 0.05) {
       dir.innerHTML += `
         <div class="directive-card" style="border-color: var(--gold)">
-          <span class="badge badge-warn">BOTTLENECK: PRANIC HOARDING</span>
+          <span class="badge badge-warn">BOTTLENECK: FEAR-BASED HOARDING</span>
           <strong>Open the Exhale Channel:</strong>
-          You are circulating only ${(phi * 100).toFixed(1)}% of your income. Fear-based saving chokes incoming flow. Channel 10% toward intentional charity (Dāna), personal learning, or upgrading basic living comfort.
+          You are circulating only ${(phi * 100).toFixed(1)}% of your earnings. Extreme hoarding constricts incoming flow. Allocate 5–10% into intentional Dāna (charity), education, or quality living upgrades.
         </div>
       `;
     }
 
-    // Clutter / Vastu Warning
+    if (leakRatio > 0.10) {
+      dir.innerHTML += `
+        <div class="directive-card" style="border-color: var(--danger)">
+          <span class="badge badge-warn">BOTTLENECK: PRANIC LEAKAGE</span>
+          <strong>Unconscious Dissipation Detected:</strong>
+          ${(leakRatio * 100).toFixed(1)}% of your inflow is leaking into impulse spending, status symbols, or rash speculation. This dissipates your Dhana container.
+        </div>
+      `;
+    }
+
+    // Directive 4: Habitat Decluttering
     if (clutter >= 6) {
       dir.innerHTML += `
         <div class="directive-card" style="border-color: var(--gold)">
           <span class="badge badge-warn">BOTTLENECK: HABITAT ENTROPY</span>
-          <strong>Declutter to Invite Sri (Lakshmi):</strong>
-          Your physical clutter is ranked ${clutter}/10. Lakshmi enters spaces defined by order, beauty, and comfort. Clear stagnant clutter from your living room and corners this week.
+          <strong>Clear Physical Space to Recept Lakshmi:</strong>
+          Entropy is rated at ${clutter}/10. Lakshmi resides where there is cleanliness, beauty, and comfort. Declutter your living and workspaces this week.
         </div>
       `;
     }
